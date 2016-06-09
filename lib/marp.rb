@@ -3,9 +3,7 @@ require 'redcarpet'
 require 'pygments'
 require 'pdfkit'
 
-require 'pry'
-
-module Mardffoop
+module Marp
   def self.run(params)
     Exporter.exports(params)
   end
