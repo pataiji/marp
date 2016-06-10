@@ -1,7 +1,9 @@
 require "marp/version"
+require "marp/renderer"
 require 'redcarpet'
 require 'pygments'
 require 'pdfkit'
+require 'tempfile'
 
 module Marp
   def self.run(params)
@@ -21,7 +23,7 @@ module Marp
 
     def export_pdf
       markdown = Redcarpet::Markdown.new(
-        Renderer::HTMLwithPygments,
+        Marp::Renderer::HTMLWithPygments,
         autolink:            true,
         tables:              true,
         fenced_code_blocks:  true,
@@ -77,23 +79,23 @@ module Marp
     def initialize(input_path, real_path)
       @real_path  = real_path
       @export_path = if File.expand_path(input_path) == real_path
-          File.expand_path(
-            "./export/#{
-              File.basename(real_path).gsub(/\.md\z/, '')
-            }.pdf",
-            Dir.pwd
-          )
-        else
-          File.expand_path(
-            "./export/#{
-              real_path
-              .sub(File.expand_path(input_path), '')
-              .gsub(/\A\//, '')
-              .gsub(/\.md\z/, '')
-            }.pdf",
-            Dir.pwd
-          )
-        end
+                       File.expand_path(
+                         "./export/#{
+                           File.basename(real_path).gsub(/\.md\z/, '')
+                         }.pdf",
+                         Dir.pwd
+                       )
+                     else
+                       File.expand_path(
+                         "./export/#{
+                           real_path
+                           .sub(File.expand_path(input_path), '')
+                           .gsub(/\A\//, '')
+                           .gsub(/\.md\z/, '')
+                         }.pdf",
+                         Dir.pwd
+                       )
+                     end
     end
   end
 end
